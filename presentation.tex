@@ -2,6 +2,21 @@
 %\documentclass[notes=only]{beamer}
 
 \usepackage[utf8]{inputenc}
+\usepackage{listings}
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\scriptsize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
  
 \usetheme{Dresden}
 
@@ -21,8 +36,16 @@
 
 \begin{document}
 \frame{\titlepage}
+\begin{frame}
+  \frametitle{Hello!}
+  I'm in Part IV, and you probably remember me from SOFTENG 251, SOFTENG 206, and SOFTENG 254\\
+  \begin{itemize}
+    \item Ask questions on Piazza instead of emailing me so your classmates can see the answers (also such that Robert can answer questions that I can't, such as specifics regarding what you can and can't do in the assignment)
+    \item If you want to meet, email me first at ezha210@aucklanduni.ac.nz
+    \item These slides will be on Canvas, and any source code demonstrated along with TeX source code for these slides can be found on github.com/encryptededdy
+  \end{itemize}
+\end{frame}
 \section{Running UNIX}
-\subsection{Options}
 \begin{frame}
   \frametitle{You need a UNIX system}
   Some ways to get a UNIX system to do this assignment
@@ -30,11 +53,19 @@
     \item Dual Boot Linux
     \item Run Linux in a Virtual Machine
     \item Run natively on macOS
+    \begin{itemize}
+      \item Probably won't work for Assignment 2 (no FUSE)
+    \end{itemize}
     \item Run within Windows Subsystem for Linux (WSL)
+    \begin{itemize}
+      \item Probably won't work for Assignment 2 (no FUSE)
+    \end{itemize}
     \item Run within Windows Subsystem for Linux 2 (WSL2)
+    \begin{itemize}
+      \item Unreleased, unless you want to run Insider Fast Ring (not recommended)
+    \end{itemize}
   \end{itemize}
 \end{frame}
-\subsection{Caveats}
 \begin{frame}
   \frametitle{On Virtual Machines}
   You can use any distro you want, but you'll probably be able to get more help when googling if you use one of the more popular desktop ones.
@@ -46,12 +77,71 @@
   \end{itemize}
 \end{frame}
 \begin{frame}
-  \frametitle{Misc.}
-  \begin{block}{Hypervisors}
-    Oracle's VirtualBox is the usual free go-to. I personally prefer VMWare Player, feel free to give it a try. Parallels is a good option on macOS, but it's \$\$\$. Also try Hyper-V on Windows if you have Pro and already have it enabled, as it lets you keep other Windows features on (like Windows Sandbox or Core Isolation). It also supports one-click install of Ubuntu.
-  \end{block}
-  \begin{block}{Dual-booting}
+  \frametitle{Hypervisors}
+  Oracle's VirtualBox is the usual free go-to. I personally prefer VMWare Player, feel free to give it a try. Parallels is a good option on macOS, but it's \$\$\$.\newline
+  \newline
+  Also try Hyper-V on Windows if you have Pro and already have it enabled, as it lets you keep other Windows features on (like Windows Sandbox or Core Isolation). It also supports one-click install of Ubuntu.
+\end{frame}
+\begin{frame}
+  \frametitle{Note on Dual Booting}
     Beware you may be unable to dual-boot on some hardware, such as Surface Devices (drivers are a bit of a pain, especially on the book; check r/surfacelinux for more resources), or the 2019 MacBook Pro (can't even install, T2 chip NVMe storage support broken).
-  \end{block}
+\end{frame}
+\begin{frame}
+  \frametitle{VSCode Remote}
+  You can develop in a Linux environment with a Linux toolchain, while running VSCode from within Windows. This supports WSL.\\
+  See: https://code.visualstudio.com/docs/remote/wsl
+  % TODO: Add photos
+\end{frame}
+\begin{frame}
+  \frametitle{Software to use}
+  \begin{itemize}
+    \item Install gcc (if not part of your distro) using apt/dnf/pacman
+    \item Visual Studio Code is a fine text editor with IntelliSense
+    \item You could also use CLion (JetBrains) if you prefer IntelliJ-like shortcuts and autocomplete, however you will need to create your own CMake file for building. There's no free version, but you can sign up for a JetBrains educational account
+  \end{itemize}
+\end{frame}
+\section{Manpages}
+\begin{frame}
+  \frametitle{Using man to find documentation}
+  \begin{columns}[c]
+    \column{.5\textwidth}
+      Man is a built in documentation tool. In this case, we can check the documentation for pthread\_create using...\\
+      \texttt{\$ man pthread\_create}
+    \column{.5\textwidth}
+      \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{pthreadmanpage.png}
+  \end{columns}
+\end{frame}
+\begin{frame}
+  \frametitle{Finding the correct manpage}
+  \begin{columns}[c]
+    \column{.5\textwidth}
+      What if there are multiple versions of a given function?\\
+      \texttt{\$ man 3 printf}\\
+      Use 3 to access section 3, which contains the C function version of printf. Without 3 you get the linux command.
+    \column{.5\textwidth}
+      \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{manprintf.png}
+  \end{columns}
+\end{frame}
+\section{Pointers}
+\begin{frame}
+  \frametitle{Defining Pointers}
+  Consider a variable foo. Say we define it as \texttt{int foo;}
+  \begin{itemize}
+    \item \texttt{\&foo} gives us the address of foo.
+    \item \texttt{int *fooPointer} stores a pointer to something of type int. Thus, we could do something like \texttt{int *fooPointer = \&foo;}
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Assignment / Dereferencing}
+  Ok, now we have a pointer to foo that we defined with \texttt{int *fooPointer = \&foo;}. How can we write to what it's pointing too (foo)?
+  \begin{itemize}
+    \item You cannot just go \texttt{fooPointer = 12}
+    \item We can instead dereference using an asterix and perform a store, such as \texttt{*fooPointer = 12}
+    \item We can load the value such as \texttt{int bar = *fooPointer;}
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Example}
+  \lstinputlisting[style=customc]{code/basicPointers.c}
 \end{frame}
 \end{document}
