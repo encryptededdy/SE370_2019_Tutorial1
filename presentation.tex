@@ -1,0 +1,57 @@
+\documentclass{beamer}
+%\documentclass[notes=only]{beamer}
+
+\usepackage[utf8]{inputenc}
+ 
+\usetheme{Dresden}
+
+\title[SOFTENG 370 Tutorial 1 (2019)] %optional
+{Linux, Pointers and pthreads}
+  
+\author{Edward Zhang}
+ 
+% \institute[UoA] % (optional)
+% {
+%   Department of ECSE\\
+%   The University of Auckland
+% }
+ 
+\date[July 2019] % (optional)
+{SOFTENG 370 T1}
+
+\begin{document}
+\frame{\titlepage}
+\section{Running UNIX}
+\subsection{Options}
+\begin{frame}
+  \frametitle{You need a UNIX system}
+  Some ways to get a UNIX system to do this assignment
+  \begin{itemize}
+    \item Dual Boot Linux
+    \item Run Linux in a Virtual Machine
+    \item Run natively on macOS
+    \item Run within Windows Subsystem for Linux (WSL)
+    \item Run within Windows Subsystem for Linux 2 (WSL2)
+  \end{itemize}
+\end{frame}
+\subsection{Caveats}
+\begin{frame}
+  \frametitle{On Virtual Machines}
+  You can use any distro you want, but you'll probably be able to get more help when googling if you use one of the more popular desktop ones.
+  \begin{itemize}
+    \item Ubuntu (probably 18.04 LTS)
+    \item Fedora Workstation (my personal preference)
+    \item Debian
+    \item Arch (great wiki, and u use arch btw), Manjaro if you actually want an installer
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Misc.}
+  \begin{block}{Hypervisors}
+    Oracle's VirtualBox is the usual free go-to. I personally prefer VMWare Player, feel free to give it a try. Parallels is a good option on macOS, but it's \$\$\$. Also try Hyper-V on Windows if you have Pro and already have it enabled, as it lets you keep other Windows features on (like Windows Sandbox or Core Isolation). It also supports one-click install of Ubuntu.
+  \end{block}
+  \begin{block}{Dual-booting}
+    Beware you may be unable to dual-boot on some hardware, such as Surface Devices (drivers are a bit of a pain, especially on the book; check r/surfacelinux for more resources), or the 2019 MacBook Pro (can't even install, T2 chip NVMe storage support broken).
+  \end{block}
+\end{frame}
+\end{document}
