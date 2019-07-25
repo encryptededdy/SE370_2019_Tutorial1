@@ -7,7 +7,7 @@
 \lstdefinestyle{customc}{
   belowcaptionskip=1\baselineskip,
   breaklines=true,
-  frame=L,
+%  frame=L,
   xleftmargin=\parindent,
   language=C,
   showstringspaces=false,
@@ -105,7 +105,7 @@
   \frametitle{Using man to find documentation}
   \begin{columns}[c]
     \column{.5\textwidth}
-      Man is a built in documentation tool. In this case, we can check the documentation for pthread\_create using...\\
+      Man is a built in documentation tool. In this case, we can check the documentation for pthread\_create using\dots\\
       \texttt{\$ man pthread\_create}
     \column{.5\textwidth}
       \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{pthreadmanpage.png}
@@ -136,12 +136,118 @@
   Ok, now we have a pointer to foo that we defined with \texttt{int *fooPointer = \&foo;}. How can we write to what it's pointing too (foo)?
   \begin{itemize}
     \item You cannot just go \texttt{fooPointer = 12}
-    \item We can instead dereference using an asterix and perform a store, such as \texttt{*fooPointer = 12}
+    \item We can instead dereference using an asterisk and perform a store, such as \texttt{*fooPointer = 12}
     \item We can load the value such as \texttt{int bar = *fooPointer;}
+    \item Note that once we load it into bar, updating bar won't change foo.
   \end{itemize}
 \end{frame}
 \begin{frame}
   \frametitle{Example}
   \lstinputlisting[style=customc]{code/basicPointers.c}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{Indirection}
+  You can do this by the way..
+  \begin{lstlisting}[style=customc]
+    int    a =  100;
+    int   *b = &a;
+    int  **c = &b;
+    int ***d = &c;
+  \end{lstlisting}
+  And to dereference these, use the appropriate number of asterisks
+  \begin{lstlisting}[style=customc]
+    ***d == **c == *b == a == 100;
+  \end{lstlisting}
+  Note that **d would return a type int * (b), and *d would return a type int ** (c).
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{Function Pointers}
+  There are cases where we have to pass around functions, and for that we can use function pointers! Consider this function\dots
+  \begin{lstlisting}[style=customc]
+    void meme(int a) {
+      printf("Nobody: 0, C: %d", a);
+    }
+  \end{lstlisting}
+  To define a variable that stores a function that returns void and takes an int, then assign it with the meme function, we can do this\dots
+  \begin{lstlisting}[style=customc]
+    void (*funcPtr)(int);
+    funcPtr = &meme;
+  \end{lstlisting}
+  In order to call funcPtr, we simply dereference it and give it the input we want.
+  \begin{lstlisting}[style=customc]
+    (*funcPtr)(370); // prints Nobody: 0, C: 370
+  \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{Function Pointers cont.}
+  This is useful if we want a function that takes a function as a parameter...
+  \begin{lstlisting}[style=customc]
+    void caller(void (*func)(int)) 
+    { 
+        func(100);
+    } 
+  \end{lstlisting}
+  ...prehaps by a library that helps you run your function on a seperate thread :thinking:
+\end{frame}
+\begin{frame}
+  \frametitle{Pointer Addition}
+
+  % TODO!
+
+\end{frame}
+\section{Structures}
+\begin{frame}[fragile] % Fragile needed for verbatim envs.
+  \frametitle{Structure Basics}
+  We can define a struct that holds multiple variables like this\dots
+  \begin{lstlisting}[style=customc]
+    struct Stuff
+    {
+      int a;
+      int b;
+    }
+  \end{lstlisting}
+  \pause
+  And declare and assign to it\dots
+  \begin{lstlisting}[style=customc]
+    struct Stuff foo;
+    foo.a = 0;
+    foo.b = 1;
+    // or
+    struct Stuff foo = {0, 1};
+  \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]
+  \frametitle{Pointing to structs}
+  \begin{lstlisting}[style=customc]
+    struct Stuff foo = {0, 1};
+    struct Stuff *fooPtr = &foo;
+  \end{lstlisting}
+  Now we have a pointer to a struct. But how do we access a and b inside it using the pointer?\\
+  \pause
+  Well, we could dereference it\dots
+  \begin{lstlisting}[style=customc]
+    (*fooPtr).a
+    (*fooPtr).b
+  \end{lstlisting}
+  But that's ugly. So instead we can use an arrow (``pointer to member'')\dots
+  \begin{lstlisting}[style=customc]
+    fooPtr->a
+    fooPtr->b
+  \end{lstlisting}
+\end{frame}
+\section{Memory Allocation}
+\begin{frame}[fragile]
+  \frametitle{Lifetime of a stack variable}
+  If we just initialize a variable like we do with ``local'' below, it is simply allocated on the stack. Recall that the stack is freed once a function returns.
+  \begin{lstlisting}[style=customc]
+  int* func(int a)
+  {
+    int local = 7;
+    return &local;
+  }
+  \end{lstlisting}
+  What's wrong with this code?\\
+  \pause
+  A: After we return this function, local will be removed from the stack. Therefore, when whatever calls func tries to dereference the pointer that was returned, it may not point to what we want it to.
 \end{frame}
 \end{document}
