@@ -258,7 +258,7 @@
   \frametitle{Lifetime of a stack variable}
   If we just initialize a variable like we do with ``local'' below, it is simply allocated on the stack. Recall that the stack is freed once a function returns.
   \begin{lstlisting}[style=customc]
-  int* func(int a)
+  int* func()
   {
     int local = 7;
     return &local;
@@ -277,9 +277,34 @@
       \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{manmalloc.png}
   \end{columns}
 \end{frame}
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Using malloc}
-  % TODO
+  Let's update our simple code from before to use malloc, such that we can safely return the poiner.
+  \begin{lstlisting}[style=customc]
+    int* func()
+    {
+      int *pointer;
+      pointer = (int *)malloc(sizeof(int));
+      if (pointer == 0)
+      {
+        // Couldn't malloc, probably out of memory
+        return 0;
+      }
+      *pointer = 7
+      return pointer;
+    }
+    \end{lstlisting}
+\end{frame}
+\begin{frame}
+  \frametitle{More memory management}
+  There way more to memory management than just using malloc, however you should look into this yourself.
+  \begin{itemize}
+    \item Use free(pointer) to free memory after you're doing using item
+    \item Using malloc to create dynamically sized arrays (not strictly needed after C99) or other data structures
+    \item Malloc does not initialize the memory to 0. Use \texttt{calloc} for that (slower)
+    \item \texttt{realloc} to change the size of already malloc-ed memory
+  \end{itemize}
+  Use \texttt{man} to find out more!
 \end{frame}
 \section{pthreads}
 \begin{frame}[fragile]
