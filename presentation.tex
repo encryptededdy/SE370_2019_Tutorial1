@@ -189,11 +189,29 @@
   \end{lstlisting}
   ...prehaps by a library that helps you run your function on a seperate thread :thinking:
 \end{frame}
-\begin{frame}
+\begin{frame}[fragile]
+  \frametitle{What's this?}
+  Consider this section of code from the assignment. What's happening here?
+  \begin{lstlisting}[style=customc]
+  struct block right_block;
+  struct block left_block;
+  left_block.size = my_data->size / 2;
+  left_block.first = my_data->first;
+  right_block.size = left_block.size + (my_data->size % 2);
+  right_block.first = my_data->first + left_block.size;
+  merge_sort(&left_block);
+  merge_sort(&right_block);
+  merge(&left_block, &right_block);
+  \end{lstlisting}
+  Recall that the block struct has \texttt{size} as an int, and \texttt{first} as an *int
+\end{frame}
+\begin{frame}[fragile]
   \frametitle{Pointer Addition}
-
-  % TODO!
-
+  If the first element is at memory location 0, then the second is at 4, then 8 and so on. (ints are usually 4 bytes).
+  \begin{lstlisting}[style=customc]
+  right_block.first = my_data->first + left_block.size;
+  \end{lstlisting}
+  When we add \texttt{size} to \texttt{first}, we essentially shift the pointer forward by \texttt{size} elements (therefore selecting the second half). Note that we aren't adding \texttt{size} bytes. Since \texttt{first} is an int pointer, (size of int $\times$ \texttt{size}) bytes are added.
 \end{frame}
 \section{Structures}
 \begin{frame}[fragile] % Fragile needed for verbatim envs.
