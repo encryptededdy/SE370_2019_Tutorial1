@@ -268,4 +268,29 @@
   \pause
   A: After we return this function, local will be removed from the stack. Therefore, when whatever calls func tries to dereference the pointer that was returned, it may not point to what we want it to.
 \end{frame}
+\begin{frame}
+  \frametitle{malloc}
+  \begin{columns}[c]
+    \column{.5\textwidth}
+      Allocates a give number of bytes (not on the stack!), and return a pointer to said memory. We can then store stuff at this memory location that won't be lost when our function returns.
+    \column{.5\textwidth}
+      \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{manmalloc.png}
+  \end{columns}
+\end{frame}
+\begin{frame}
+  \frametitle{Using malloc}
+  % TODO
+\end{frame}
+\section{pthreads}
+\begin{frame}[fragile]
+  \frametitle{pthread\_create}
+  \begin{lstlisting}[style=customc]
+    int pthread_create(
+      pthread_t *thread, 
+      const pthread_attr_t *attr, 
+      void *(*start_routine) (void *), 
+      void *arg
+    );
+  \end{lstlisting}
+\end{frame}
 \end{document}
