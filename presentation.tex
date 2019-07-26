@@ -317,5 +317,16 @@
       void *arg
     );
   \end{lstlisting}
+  \texttt{*thread}: Pointer to a \texttt{pthread\_t} struct at which a data about the thread will be stored.\\
+  \pause
+  \texttt{*attr}: A pointer to a \texttt{pthread\_attr\_t} struct with parameters for the thread. If you have no parameters to pass, you can set this to NULL.\\
+  \pause
+  \texttt{(*start\_routine)}: A function pointer to a function that takes one arg of type void* and has a return value of void*.\\
+  \pause
+  \texttt{*arg}: Pointer to the argument for the above function.
+\end{frame}
+\begin{frame}
+  \frametitle{\texttt{void*} pointer?}
+  A pointer to void is basically a ``generic'' pointer.
 \end{frame}
 \end{document}
