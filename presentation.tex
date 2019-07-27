@@ -3,6 +3,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
+\usepackage{ulem}
 
 \lstdefinestyle{customc}{
   belowcaptionskip=1\baselineskip,
@@ -56,9 +57,9 @@
     \begin{itemize}
       \item Probably won't work for Assignment 2 (no FUSE)
     \end{itemize}
-    \item Run within Windows Subsystem for Linux (WSL)
+    \item \sout{Run within Windows Subsystem for Linux (WSL)}
     \begin{itemize}
-      \item Probably won't work for Assignment 2 (no FUSE)
+      \item Stack size is fixed at 8192K - can only test around 0.5mil elements
     \end{itemize}
     \item Run within Windows Subsystem for Linux 2 (WSL2)
     \begin{itemize}
@@ -80,7 +81,7 @@
   \frametitle{Hypervisors}
   Oracle's VirtualBox is the usual free go-to. I personally prefer VMWare Player, feel free to give it a try. Parallels is a good option on macOS, but it's \$\$\$.\newline
   \newline
-  Also try Hyper-V on Windows if you have Pro and already have it enabled, as it lets you keep other Windows features on (like Windows Sandbox or Core Isolation). It also supports one-click install of Ubuntu.
+  Also try Hyper-V on Windows if you have Pro/Education (you can get Education for free using Azure dev tools for teaching) and already have it enabled, as it lets you keep other Windows features on (like Windows Sandbox or Core Isolation). It also supports one-click install of Ubuntu.
 \end{frame}
 \begin{frame}
   \frametitle{Note on Dual Booting}
@@ -88,7 +89,7 @@
 \end{frame}
 \begin{frame}
   \frametitle{VSCode Remote}
-  You can develop in a Linux environment with a Linux toolchain, while running VSCode from within Windows. This supports WSL.\\
+  You can develop in a Linux environment with a Linux toolchain, while running VSCode from within Windows. This supports WSL and Linux systems over a SSH connection. Useful as it lets you run a headless VM while still being able to use VSCode to edit as if it was local.\\
   See: https://code.visualstudio.com/docs/remote/wsl
   % TODO: Add photos
 \end{frame}
