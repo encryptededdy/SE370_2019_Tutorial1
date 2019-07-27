@@ -18,6 +18,20 @@
   identifierstyle=\color{blue},
   stringstyle=\color{orange},
 }
+
+\lstdefinestyle{customctiny}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+%  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\tiny\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
  
 \usetheme{Dresden}
 
@@ -143,7 +157,7 @@
   \end{itemize}
 \end{frame}
 \begin{frame}
-  \frametitle{Example}
+  \frametitle{Example / Demo}
   \lstinputlisting[style=customc]{code/basicPointers.c}
 \end{frame}
 \begin{frame}[fragile]
@@ -326,8 +340,39 @@
   \pause
   \texttt{*arg}: Pointer to the argument for the above function.
 \end{frame}
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{\texttt{void*} pointer?}
-  A pointer to void is basically a ``generic'' pointer.
+  A pointer to void is basically a ``generic'' pointer. We can therefore point it to anything we want, then cast to what we need. Consider this example of a function we could pass into \texttt{pthread\_create}\dots
+  \begin{lstlisting}[style=customc]
+    void *doWork(void *ptr)
+    {
+        int threadID = *(int*) ptr; // Cast to int pointer, then dereference
+        printf("Thread - %d\n", threadID);
+        return 0;
+    }
+  \end{lstlisting}
+  Note how it takes in a \texttt{void*} parameter, then proceeds to cast it to the type it was expecting (int).
+\end{frame}
+\begin{frame}
+  \frametitle{Other pthread things}
+  \begin{itemize}
+    \item Use \texttt{-pthread} compiler switch to add pthread support
+    \item Different \texttt{pthread\_attr\_t} options may be used to do things such as increase stack size in the given thread
+    \item \texttt{pthread\_join}: Wait for this thread to complete (typically used on main thread to ensure all child threads are complete before contiuning)
+    \item \texttt{pthread\_mutex\_xxxx}: Series of functions for enforcing MUTual EXclusions (essentially thread safe locks)
+  \end{itemize}
+\end{frame}
+\begin{frame}
+  \frametitle{Example / Demo}
+  \lstinputlisting[style=customc]{code/basicPthread.c}
+\end{frame}
+\begin{frame}
+  \frametitle{Example / Demo}
+  \lstinputlisting[style=customctiny]{code/threadSafety.c}
+\end{frame}
+\begin{frame}
+  \frametitle{Mutex}
+  As shown, we can't increment the integer from two threads at once. We can fix this using locking, which can be achieved using mutexes, to make sure only one thread is incrementing the target integer at once.\newline\newline
+  \emph{Note:} If this was a real problem, we may want to consider other ways of overcoming this problem, such as using sum reduction, which would offer better performance than locking in this way.
 \end{frame}
 \end{document}
