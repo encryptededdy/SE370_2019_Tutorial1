@@ -186,7 +186,7 @@
   To define a variable that stores a function that returns void and takes an int, then assign it with the meme function, we can do this\dots
   \begin{lstlisting}[style=customc]
     void (*funcPtr)(int);
-    funcPtr = &meme;
+    funcPtr = &meme; // & not necessary, I prefer this syntax
   \end{lstlisting}
   In order to call funcPtr, we simply dereference it and give it the input we want.
   \begin{lstlisting}[style=customc]
@@ -202,7 +202,7 @@
         func(100);
     } 
   \end{lstlisting}
-  ...prehaps by a library that helps you run your function on a seperate thread :thinking:
+  ...perhaps by a library that helps you run your function on a seperate thread :thinking:
 \end{frame}
 \begin{frame}[fragile]
   \frametitle{What's this?}
@@ -294,7 +294,7 @@
 \end{frame}
 \begin{frame}[fragile]
   \frametitle{Using malloc}
-  Let's update our simple code from before to use malloc, such that we can safely return the poiner.
+  Let's update our simple code from before to use malloc, such that we can safely return the pointer.
   \begin{lstlisting}[style=customc]
     int* func()
     {
@@ -358,7 +358,7 @@
   \begin{itemize}
     \item Use \texttt{-pthread} compiler switch to add pthread support
     \item Different \texttt{pthread\_attr\_t} options may be used to do things such as increase stack size in the given thread
-    \item \texttt{pthread\_join}: Wait for this thread to complete (typically used on main thread to ensure all child threads are complete before contiuning)
+    \item \texttt{pthread\_join}: Wait for this thread to complete (typically used on main thread to ensure all child threads are complete before continuing)
     \item \texttt{pthread\_mutex\_xxxx}: Series of functions for enforcing MUTual EXclusions (essentially thread safe locks)
   \end{itemize}
 \end{frame}

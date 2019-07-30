@@ -9,6 +9,8 @@ void *doWork(void *ptr)
 int main(int argc, char **argv)
 {
     pthread_t thread1, thread2; // Maybe malloc these
+    int thr = 1;
+    int thr2 = 2;
     pthread_create(&thread1, NULL, *doWork, (void *) &thr);
     pthread_create(&thread2, NULL, *doWork, (void *) &thr2);
     pthread_join(thread1,NULL);
